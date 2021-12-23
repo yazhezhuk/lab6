@@ -13,26 +13,26 @@ class SomeUser(HttpUser):
     def get(self):
         self.client.get("/users",headers={"Authorization": "Bearer " + bearer_token})
 
-    @task(5)
+    @task
     def view_users(self):
         for user_id in range(100):
             self.client.get(f"/users/{user_id}",headers={"Authorization": "Bearer " + bearer_token})
             time.sleep(1)
 
-    @task(6)
+    @task
     def add_posts(self):
-        for user_id in range(100):
-            self.client.post(f"/posts/", name="/posts", json={"title": user_id, "text": user_id},headers={"Authorization": "Bearer " + bearer_token})
+        for post_id in range(100):
+            self.client.post(f"/posts/", name="/posts", json={"id": post_id, "email": post_id,"body" : post_id}, headers={"Authorization": "Bearer " + bearer_token})
             time.sleep(1)
 
-    @task(7)
-    def put_comments(self):
+    @task
+    def put_users(self):
         for user_id in range(100):
-            self.client.put(f"/users/{user_id}", name="/users",
-                            json={"username": f"f{user_id}", "password": f"b {user_id}"},headers={"Authorization": "Bearer " + bearer_token})
+            self.client.put(f"/users/{user_id}",
+                            json={"username": f"f{user_id}", "password": f"b {user_id}"}, headers={"Authorization": "Bearer " + bearer_token})
             time.sleep(1)
 
-    @task(8)
+    @task
     def put_comments(self):
         for post_id in range(100):
             self.client.delete(f"/posts/{post_id}", name="/posts",headers={"Authorization": "Bearer " + bearer_token})
